@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     struct sockaddr_in servAddr;
     memset(&servAddr, 0, sizeof(servAddr));
     servAddr.sin_family = AF_INET;
-
+    socklen_t servAddrLen = sizeof(servAddr);
     // Converting the IP address which is in string to it's binary network format.
     int retVal = inet_pton(AF_INET, servIP, &servAddr.sin_addr.s_addr);
     if (retVal == 0)
@@ -46,6 +46,14 @@ int main(int argc, char *argv[])
     }
 
     // TODO: Connecting to given server.
+    for (int i = portStart; i <= portEnd; i++)
+    {
+        servAddr.sin_port = htons(i);
+        if (!connect(sock_fd, (struct sockaddr *)&servAddr, servAddrLen))
+        {
+            printf("Open port: %d\n", i);
+        }
+    }
 
     return 0;
 }
