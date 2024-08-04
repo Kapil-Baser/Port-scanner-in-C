@@ -45,5 +45,7 @@ int main(int argc, char *argv[])
         exitWithSystemMessage("inet_pton(), failed");
     }
 
+    // TODO: Connecting to given server.
+
     return 0;
 }
