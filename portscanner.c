@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 {
     if (argc != 4)
     {
-        //printf("Parameters(s)", "<Server Address> <Port range start> <Port range end>");
+        exitWithUserMessage("Parameters(s)", "<Server Address> <Port range start> <Port range end>");
         return -1;
     }
 
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     struct sockaddr_in servAddr;
     memset(&servAddr, 0, sizeof(servAddr));
     servAddr.sin_family = AF_INET;
-    
+
     // Converting the IP address which is in string to it's binary network format.
     int retVal = inet_pton(AF_INET, servIP, &servAddr.sin_addr.s_addr);
     if (retVal == 0)
