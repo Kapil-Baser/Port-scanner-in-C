@@ -22,5 +22,28 @@ int main(int argc, char *argv[])
 
     printf("Starting port - %d", portStart);
     printf("Ending port %d", portEnd);
+
+    // Creating a reliable stream socket using TCP.
+    int sock_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (sock_fd < 0)
+    {
+        exitWithSystemMessage("socket(), failed");
+    }
+
+    struct sockaddr_in servAddr;
+    memset(&servAddr, 0, sizeof(servAddr));
+    servAddr.sin_family = AF_INET;
+    
+    // Converting the IP address which is in string to it's binary network format.
+    int retVal = inet_pton(AF_INET, servIP, &servAddr.sin_addr.s_addr);
+    if (retVal == 0)
+    {
+        exitWithUserMessage("inet_pton() failed", "invalid address string");
+    }
+    else if (retVal < 0)
+    {
+        exitWithSystemMessage("inet_pton(), failed");
+    }
+
     return 0;
 }
