@@ -25,6 +25,12 @@ int main(int argc, char *argv[])
     printf("Starting port - %d", portStart);
     printf("Ending port %d", portEnd);
 
+    struct addrinfo addrCriteria;
+    memset(&addrCriteria, 0, sizeof(addrCriteria));
+    addrCriteria.ai_family = AF_UNSPEC;
+    addrCriteria.ai_socktype = SOCK_STREAM;
+    addrCriteria.ai_protocol = IPPROTO_TCP;
+
     // Creating a reliable stream socket using TCP.
     int sock_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sock_fd < 0)
