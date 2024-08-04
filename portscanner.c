@@ -1,7 +1,9 @@
+#define _XOPEN_SOURCE 700   // Needed to add this because VS code is not picking up addrinfo struct from netdb.h.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <netdb.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
