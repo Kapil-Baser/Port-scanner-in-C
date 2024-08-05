@@ -31,6 +31,14 @@ int main(int argc, char *argv[])
     addrCriteria.ai_socktype = SOCK_STREAM;
     addrCriteria.ai_protocol = IPPROTO_TCP;
 
+    // Creating a addrinfo struct to get addresses of given host/service.
+    struct addrinfo *addrList;
+
+    int ret = getaddrinfo(servIP, argv[2], &addrCriteria, &addrList);
+    if (ret != 0)
+    {
+        exitWithUserMessage("getaddrinfo() failed", gai_strerror(ret));
+    }
     // Creating a reliable stream socket using TCP.
     int sock_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sock_fd < 0)
@@ -62,6 +70,7 @@ int main(int argc, char *argv[])
             printf("Open port: %d\n", i);
         }
     }
-
+    
+    freeaddrinfo(addrList);
     return 0;
 }
