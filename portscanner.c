@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
     addrCriteria.ai_family = AF_UNSPEC;
     addrCriteria.ai_socktype = SOCK_STREAM;
     addrCriteria.ai_protocol = IPPROTO_TCP;
+    //addrCriteria.ai_flags = AI_NUMERICHOST;
 
     // Creating a addrinfo struct to get addresses of given host/service.
     struct addrinfo *addrList;
@@ -39,12 +40,7 @@ int main(int argc, char *argv[])
     {
         exitWithUserMessage("getaddrinfo() failed", gai_strerror(ret));
     }
-    // Creating a reliable stream socket using TCP.
-    int sock_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (sock_fd < 0)
-    {
-        exitWithSystemMessage("socket(), failed");
-    }
+
 
     struct sockaddr_in servAddr;
     memset(&servAddr, 0, sizeof(servAddr));
@@ -64,11 +60,20 @@ int main(int argc, char *argv[])
     // TODO: Connecting to given server.
     for (int i = portStart; i <= portEnd; i++)
     {
+        // Creating a reliable stream socket using TCP.
+        int sock_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+        if (sock_fd < 0)
+        {
+            exitWithSystemMessage("socket(), failed");
+        }
+
         servAddr.sin_port = htons(i);
+
         if (!connect(sock_fd, (struct sockaddr *)&servAddr, servAddrLen))
         {
             printf("Open port: %d\n", i);
         }
+        close(sock_fd);
     }
     
     freeaddrinfo(addrList);
